@@ -1,16 +1,21 @@
 import React, { KeyboardEvent, KeyboardEventHandler, useState } from "react";
+import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
 
 const Home = () => {
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
+
   const createNewRoom = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const id = Math.random().toString();
+    const id = uuidv4();
     setRoomId(id);
+    toast.success("created new room", { position: "top-center" });
   };
 
   const joinRoom = () => {
     if (!roomId || !username) {
+      toast.error("roomId and name are required");
       return;
     }
 
