@@ -1,6 +1,6 @@
 # CodeSync
 
-ChatSync is a real-time collaborative code editor built with React, TypeScript, WebSockets, and Monaco Editor. This app allows multiple users to work together on code in real time within a shared room.
+CodeSync is a real-time collaborative code editor built with React, TypeScript, WebSockets, and Monaco Editor. This app allows multiple users to work together on code in real time within a shared room.
 
 ## Features
 
