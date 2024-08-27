@@ -1,10 +1,12 @@
 import React, { KeyboardEvent, KeyboardEventHandler, useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   const createNewRoom = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -20,7 +22,8 @@ const Home = () => {
     }
 
     // Redirect
-    //redirect to editor page with username state
+    //we can pass data this way to pass data from 1page to redirected page
+    navigate(`/editor/${roomId}`, { state: { username } });
   };
 
   const handleInputEnter = (e: KeyboardEvent) => {
