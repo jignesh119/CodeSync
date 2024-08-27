@@ -6,12 +6,17 @@ import * as Actions from "../Actions.json";
 interface IEditorProps {
   socketRef: Socket | null;
   roomId: string | undefined;
+  onCodeChange(code: string): any;
 }
 
 interface ActionsType {
   [k: string]: string;
 }
-const EditorComp: React.FC<IEditorProps> = ({ socketRef, roomId }) => {
+const EditorComp: React.FC<IEditorProps> = ({
+  socketRef,
+  roomId,
+  onCodeChange,
+}) => {
   const [code, setCode] = useState<string | null>(null);
   const editorRef = useRef(null);
   const actions: ActionsType = Actions;
@@ -35,6 +40,7 @@ const EditorComp: React.FC<IEditorProps> = ({ socketRef, roomId }) => {
   };
   const onChange = (v: string | undefined, ev: any) => {
     setCode(v as string);
+    onCodeChange(v as string);
     // console.log(`value: ${v}\n ev:${JSON.stringify(ev)}`);
     // TODO: emit code change and configure endpoint
     socketRef?.emit(actions.CODE_CHANGE, { roomId, code });

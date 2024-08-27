@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "npm run build && npm run server:prod",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server:prod": "node server.js",
+    "server:dev": "nodemon server.js"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",

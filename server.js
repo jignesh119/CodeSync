@@ -2,9 +2,18 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const server = createServer(app);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static("build"));
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 const io = new Server(server);
 const actions = JSON.parse(fs.readFileSync("./src/Actions.json", "utf8"));
@@ -54,10 +63,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on(actions.CODE_CHANGE, ({ roomId, code }) => {
-    console.log(`received code: ${code}`);
     //NOTE: .in means-> sending to all except the orign sender
     //.to means direct broadcasting
     socket.in(roomId).emit(actions.CODE_CHANGE, { code });
+  });
+  socket.on(actions.SYNC_CODE, ({ code, socketId }) => {
+    io.to(socketId).emit(actions.CODE_CHANGE, { code });
   });
 });
 

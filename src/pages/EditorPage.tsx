@@ -22,6 +22,8 @@ const EditorPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { roomId } = useParams();
+  const codeRef = useRef<string | null>(null);
+
   const [clients, setClients] = React.useState<
     { socketId?: string; username: string }[]
   >([{ username: location.state.username }]);
@@ -50,13 +52,23 @@ const EditorPage = () => {
         username: location.state?.username,
       });
 
-      socketRef.current.on(actions.USER_JOINED, ({ clients, username }) => {
-        setClients(clients);
-        if (username !== location.state.username) {
-          console.log(`${username} joined`);
-          toast.success(`${username} joined`);
-        }
-      });
+      socketRef.current.on(
+        actions.USER_JOINED,
+        ({ clients, username, socketId }) => {
+          setClients(clients);
+          if (username !== location.state.username) {
+            console.log(`${username} joined`);
+            toast.success(`${username} joined`);
+          }
+
+          //TODO: send the code to sync code for new joiners
+          //NOTE: the code to send to sync cant stored in useState as on each key stroke, state is updated=>useRef
+          socketRef.current?.emit(actions.SYNC_CODE, {
+            code: codeRef.current,
+            socketId,
+          });
+        },
+      );
       // socketRef.current.on(actions.JOINED, ({ clients, username }) => {
       //   if (username !== location.state?.username) {
       //     toast.success(`${username} joined the room.`);
@@ -127,7 +139,13 @@ const EditorPage = () => {
         </button>
       </div>
       <div className="editorWrap">
-        <Editor socketRef={socketRef.current} roomId={roomId} />
+        <Editor
+          socketRef={socketRef.current}
+          roomId={roomId}
+          onCodeChange={(code) => {
+            codeRef.current = code as string;
+          }}
+        />
       </div>
     </div>
   );
