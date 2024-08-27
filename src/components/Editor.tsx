@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import CodeMirror from "codemirror";
 
 interface IEditorProps {}
 
+//TODO: setup codemirror editor
 const Editor: React.FC<IEditorProps> = ({}) => {
-  return <div> Editorpage</div>;
+  useEffect(() => {
+    (async () => {
+      //FIXME: look at codemirror docs and setup basic layout
+      CodeMirror.fromTextArea;
+    })();
+  }, []);
+  return (
+    <div>
+      <textarea id="realTimeEditor" />
+    </div>
+  );
 };
 export default Editor;

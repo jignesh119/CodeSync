@@ -6,6 +6,7 @@ const EditorPage = () => {
   const [clients, setClients] = React.useState([
     { socketId: 1, username: "pawrStar" },
     { socketId: 2, username: "jagun" },
+    { socketId: 3, username: "cbn" },
   ]);
   return (
     <div className="mainWrap">

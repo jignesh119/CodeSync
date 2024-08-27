@@ -9,7 +9,7 @@ const Client: React.FC<IClientProps> = ({ username }) => {
   return (
     <div className="client">
       <Avatar name={username} size={"50"} round="14px" />
-      <span>Clientpage {username}</span>
+      <span>{username}</span>
     </div>
   );
 };

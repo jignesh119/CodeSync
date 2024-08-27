@@ -1,8 +1,3 @@
-body {
-  height: 100vh;
-  width: 100vw;
-}
-
 .homePageWrapper {
   width: 100vw;
   display: flex;
@@ -32,6 +27,7 @@ footer a {
 .inputGroup {
   display: flex;
   flex-direction: column;
+  height: 100;
 }
 
 .mainLabel {
@@ -93,4 +89,52 @@ footer a {
 footer a:hover {
   color: #368654;
   border-color: #368654;
+}
+
+.mainWrap {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  height: 100vh;
+}
+
+.aside {
+  background: #1c1e29;
+  padding: 16px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.asideInner {
+  flex: 1;
+}
+
+.clientsList {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.client {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-weight: bold;
+}
+.userName {
+  margin-top: 10px;
+}
+
+.logo {
+  border-bottom: 1px solid #424242;
+  padding-bottom: 10px;
+}
+
+.logoImage {
+  height: 60px;
+}
+
+.leaveBtn {
+  width: 100%;
+  margin-top: 20px;
 }
