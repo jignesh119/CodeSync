@@ -27,10 +27,18 @@ io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
 
   socket.on(actions.JOIN, ({ roomId, username }) => {
+    userSocketMap[socket.id] = username;
     console.log("Joining room", roomId);
     socket.join(roomId);
     const clients = getAllConnectedClients(roomId);
-    socket.to(roomId).emit(actions.USER_JOINED, { clients, username });
+    // socket.to(roomId).emit(actions.USER_JOINED, { clients, username });
+    clients.forEach(({ socketId }) => {
+      io.to(socketId).emit(actions.JOINED, {
+        clients,
+        username,
+        socketId: socket.id,
+      });
+    });
   });
 
   socket.on("disconnecting", () => {

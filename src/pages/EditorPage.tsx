@@ -3,7 +3,6 @@ import Client from "../components/Client";
 import Editor from "../components/Editor";
 import { initSocket } from "../io";
 import { Socket } from "socket.io-client";
-//TODO: import from json file
 import * as Actions from "../Actions.json";
 import {
   useLocation,
@@ -101,7 +100,10 @@ const EditorPage = () => {
           <h3>Connected</h3>
           <div className="clientsList">
             {clients?.map((client) => (
-              <Client key={client.socketId} username={client.username} />
+              <Client
+                key={client.socketId + Math.random().toString()}
+                username={client.username}
+              />
             ))}
           </div>
         </div>
@@ -109,7 +111,7 @@ const EditorPage = () => {
         <button className="btn leaveBtn">Leave</button>
       </div>
       <div className="editorWrap">
-        <Editor />
+        <Editor socketRef={socketRef.current} roomId={roomId} />
       </div>
     </div>
   );
