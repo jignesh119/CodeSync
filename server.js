@@ -10,14 +10,39 @@ const io = new Server(server);
 const actions = JSON.parse(fs.readFileSync("./src/Actions.json", "utf8"));
 console.log(`fetching from json file`);
 
+const userSocketMap = {};
+function getAllConnectedClients(roomId) {
+  // Map
+  return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
+    (socketId) => {
+      return {
+        socketId,
+        username: userSocketMap[socketId],
+      };
+    },
+  );
+}
+
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
-  console.log(actions);
 
   socket.on(actions.JOIN, ({ roomId, username }) => {
     console.log("Joining room", roomId);
     socket.join(roomId);
-    socket.to(roomId).emit(actions.USER_JOINED, username);
+    const clients = getAllConnectedClients(roomId);
+    socket.to(roomId).emit(actions.USER_JOINED, { clients, username });
+  });
+
+  socket.on("disconnecting", () => {
+    const rooms = [...socket.rooms];
+    rooms.forEach((roomId) => {
+      socket.in(roomId).emit(actions.DISCONNECTED, {
+        socketId: socket.id,
+        username: userSocketMap[socket.id],
+      });
+      socket.leave(roomId);
+    });
+    delete userSocketMap[socket.id];
   });
 });
 

@@ -23,11 +23,9 @@ const EditorPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { roomId } = useParams();
-  const [clients, setClients] = React.useState([
-    { socketId: 1, username: "pawrStar" },
-    { socketId: 2, username: "jagun" },
-    { socketId: 3, username: "cbn" },
-  ]);
+  const [clients, setClients] = React.useState<
+    { socketId?: string; username: string }[]
+  >([{ username: location.state.username }]);
 
   const handleErrors = (err: Error) => {
     console.log(`Error with ws client: ${err}`);
@@ -50,16 +48,47 @@ const EditorPage = () => {
 
       socketRef.current.emit(actions.JOIN, {
         roomId,
-        username: location?.state?.username,
+        username: location.state?.username,
       });
 
-      socketRef.current.on(actions.USER_JOINED, (username) => {
-        console.log(`${username} joined`);
+      socketRef.current.on(actions.USER_JOINED, ({ clients, username }) => {
+        setClients(clients);
         if (username !== location.state.username) {
+          console.log(`${username} joined`);
           toast.success(`${username} joined`);
         }
       });
+      // socketRef.current.on(actions.JOINED, ({ clients, username }) => {
+      //   if (username !== location.state?.username) {
+      //     toast.success(`${username} joined the room.`);
+      //     console.log(`${username} joined`);
+      //   }
+      //   setClients(clients);
+      // });
+
+      socketRef.current.on(actions.DISCONNECTED, ({ socketId, username }) => {
+        setClients((prev) => prev.filter((c) => c.socketId !== socketId));
+        toast.success(`User ${username} disconnected`);
+      });
+
+      // socketRef.current.on(
+      //                ACTIONS.DISCONNECTED,
+      //                ({ socketId, username }) => {
+      //                    toast.success(`${username} left the room.`);
+      //                    setClients((prev) => {
+      //                        return prev.filter(
+      //                            (client) => client.socketId !== socketId
+      //                        );
+      //                    });
+      //                }
+      //            );
+      //
     })();
+    return () => {
+      socketRef.current?.disconnect();
+      socketRef.current?.off(actions.JOINED);
+      socketRef.current?.off(actions.DISCONNECTED);
+    };
   }, []);
 
   return (
@@ -71,7 +100,7 @@ const EditorPage = () => {
           </div>
           <h3>Connected</h3>
           <div className="clientsList">
-            {clients.map((client) => (
+            {clients?.map((client) => (
               <Client key={client.socketId} username={client.username} />
             ))}
           </div>
