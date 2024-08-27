@@ -31,9 +31,9 @@ io.on("connection", (socket) => {
     console.log("Joining room", roomId);
     socket.join(roomId);
     const clients = getAllConnectedClients(roomId);
-    // socket.to(roomId).emit(actions.USER_JOINED, { clients, username });
+    // socket.in(roomId).emit(actions.USER_JOINED, { clients, username });
     clients.forEach(({ socketId }) => {
-      io.to(socketId).emit(actions.JOINED, {
+      io.to(socketId).emit(actions.USER_JOINED, {
         clients,
         username,
         socketId: socket.id,
@@ -51,6 +51,13 @@ io.on("connection", (socket) => {
       socket.leave(roomId);
     });
     delete userSocketMap[socket.id];
+  });
+
+  socket.on(actions.CODE_CHANGE, ({ roomId, code }) => {
+    console.log(`received code: ${code}`);
+    //NOTE: .in means-> sending to all except the orign sender
+    //.to means direct broadcasting
+    socket.in(roomId).emit(actions.CODE_CHANGE, { code });
   });
 });
 
