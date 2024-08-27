@@ -57,11 +57,9 @@ const EditorPage = () => {
         ({ clients, username, socketId }) => {
           setClients(clients);
           if (username !== location.state.username) {
-            console.log(`${username} joined`);
             toast.success(`${username} joined`);
           }
 
-          //TODO: send the code to sync code for new joiners
           //NOTE: the code to send to sync cant stored in useState as on each key stroke, state is updated=>useRef
           socketRef.current?.emit(actions.SYNC_CODE, {
             code: codeRef.current,

@@ -41,8 +41,6 @@ const EditorComp: React.FC<IEditorProps> = ({
   const onChange = (v: string | undefined, ev: any) => {
     setCode(v as string);
     onCodeChange(v as string);
-    // console.log(`value: ${v}\n ev:${JSON.stringify(ev)}`);
-    // TODO: emit code change and configure endpoint
     socketRef?.emit(actions.CODE_CHANGE, { roomId, code });
   };
   return (
@@ -56,7 +54,6 @@ const EditorComp: React.FC<IEditorProps> = ({
         onChange={onChange}
         onMount={onMount}
       />
-      <p>this is a sample editor</p>
     </div>
   );
 };

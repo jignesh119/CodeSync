@@ -139,5 +139,6 @@ footer a:hover {
   margin-top: 20px;
 }
 .editorWrap {
-  width: 700px;
+  width: 84vw;
+  height: 100vh;
 }

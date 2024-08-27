@@ -10,14 +10,15 @@ const server = createServer(app);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static("build"));
+
+app.use(express.static("dist"));
 app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
+  next();
 });
 
 const io = new Server(server);
 const actions = JSON.parse(fs.readFileSync("./src/Actions.json", "utf8"));
-console.log(`fetching from json file`);
 
 const userSocketMap = {};
 function getAllConnectedClients(roomId) {
@@ -33,11 +34,8 @@ function getAllConnectedClients(roomId) {
 }
 
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
-
   socket.on(actions.JOIN, ({ roomId, username }) => {
     userSocketMap[socket.id] = username;
-    console.log("Joining room", roomId);
     socket.join(roomId);
     const clients = getAllConnectedClients(roomId);
     // socket.in(roomId).emit(actions.USER_JOINED, { clients, username });

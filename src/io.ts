@@ -7,7 +7,6 @@ export const initSocket = async () => {
     timeout: 10000,
     transports: ["websocket"],
   };
-  console.log(`init socket with ${import.meta.env.VITE_APP_BACKEND_URL}`);
   return io(
     (import.meta.env.VITE_APP_BACKEND_URL as string) || "http://localhost:4500",
     initOpts,
