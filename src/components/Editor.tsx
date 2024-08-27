@@ -1,20 +1,26 @@
-import React, { useEffect } from "react";
-import CodeMirror from "codemirror";
+import React, { useEffect, useState } from "react";
+import Editor from "@monaco-editor/react";
 
 interface IEditorProps {}
 
 //TODO: setup codemirror editor
-const Editor: React.FC<IEditorProps> = ({}) => {
+const EditorComp: React.FC<IEditorProps> = ({}) => {
+  const [value, setValue] = useState<string | null>(null);
   useEffect(() => {
-    (async () => {
-      //FIXME: look at codemirror docs and setup basic layout
-      CodeMirror.fromTextArea;
-    })();
+    (async () => {})();
   }, []);
   return (
     <div>
-      <textarea id="realTimeEditor" />
+      <Editor
+        height="90vh"
+        defaultLanguage="javascript"
+        defaultValue="//some comment"
+        theme="vs-dark"
+        value={value as string}
+        onChange={(v) => setValue(v as string)}
+      />
+      <p>this is a sample editor</p>
     </div>
   );
 };
-export default Editor;
+export default EditorComp;

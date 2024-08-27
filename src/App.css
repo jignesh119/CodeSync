@@ -3,7 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
   height: 100vh;
 }
 
@@ -41,6 +40,7 @@ footer a {
 }
 
 .inputBox {
+  color: black;
   padding: 10px;
   border-radius: 5px;
   outline: none;
@@ -137,4 +137,7 @@ footer a:hover {
 .leaveBtn {
   width: 100%;
   margin-top: 20px;
+}
+.editorWrap {
+  width: 700px;
 }
