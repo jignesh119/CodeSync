@@ -76,6 +76,11 @@ src/
 server.js         # websocket server code
 ```
 
+## Demo
+
+<img src="./assets/codesync1.png">
+<img src="./assets/codesync2.png">
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
